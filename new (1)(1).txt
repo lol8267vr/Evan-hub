@@ -1,0 +1,1292 @@
+-- Skidded by ! Evan#2847 yees, credit me (or the actual creator of the script used?) if you use any content here
+
+--[[ Side note, for the Vehicle Simulator stuff;
+    -For the TP Car, you need to be the driver of said car once you've been tp'd to it
+    -For the tp player or kill, you need to be driving a car, and the targed needs to be **on foot**
+    If there's any problems, feel free to dm me
+
+    Yes I asked a friend to release this for me xd
+]]
+-- + 1 watermark, im smart.
+
+plrs = game.Players
+plr = plrs.LocalPlayer
+char = plr.Character
+
+rs = game:GetService'RunService'
+
+if game.CoreGui:FindFirstChild("Same") then game.CoreGui:FindFirstChild("Same"):Destroy() end
+ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Same"
+
+hugestring = "uw"
+
+for i=1,15 do
+    hugestring = hugestring..hugestring
+end
+
+rgb = Color3.fromRGB
+
+function findIndex(tab, value)
+    local res
+    for i,v in ipairs(tab) do
+        if v == value then
+            res = i
+        end
+    end
+    return res
+end
+
+rs:UnbindFromRenderStep("Keep UI at bottom!")
+wait()
+rs:UnbindFromRenderStep("Gui shit")
+wait()
+
+-- UI
+
+-- if legacyUI then dIsCoNtInUeD lOl
+    local guiFuncs, MainUI, mainGui, removeAll, addValues, addButton, addPopup, addCategory = loadstring(game:HttpGet("https://ixss.keybase.pub/rblx/GUI/GUI.txt"))()
+-- else 
+    -- loadstring(game:HttpGet("https://ixss.keybase.pub/rblx/GUI/GUI.txt", true))()
+-- end
+-- General functions
+
+function firstHum(target)
+    for i,v in pairs(target:GetChildren()) do
+        if v:IsA("Humanoid") then
+            return v
+        end
+    end
+    for i,v in pairs(target.Parent:GetChildren()) do
+        if v:IsA("Humanoid") then
+            return v
+        end
+    end
+    return nil
+end
+
+function findPlayer(name)
+	for _, player in ipairs(game.Players:GetPlayers()) do
+		if player.Name:lower():find(name:lower()) then
+			return player
+		end
+	end
+end
+
+function scriptexe()
+	-- Instances:
+	local Category = Instance.new("Frame")
+	local BG = Instance.new("Frame")
+	local Script = Instance.new("TextBox")
+	local Frame = Instance.new("Frame")
+	local UIListLayout = Instance.new("UIListLayout")
+	local Exec = Instance.new("TextButton")
+	local toggle = Instance.new("TextButton")
+	--Properties:
+	Category.Name = "Category"
+	Category.Parent = ScreenGui
+	Category.Active = true
+	Category.BackgroundColor3 = Color3.new(0.666667, 0, 0)
+	Category.BorderColor3 = Color3.new(1, 0, 0)
+	Category.BorderSizePixel = 0
+	Category.Position = UDim2.new(0.358757049, 0, 0.127906978, 0)
+	Category.Size = UDim2.new(0, 300, 0, 17)
+	Category.Draggable = true
+	
+	BG.Name = "BG"
+	BG.Parent = Category
+	BG.Active = true
+	BG.BackgroundColor3 = Color3.new(1, 1, 1)
+	BG.BorderSizePixel = 0
+	BG.Position = UDim2.new(0, 0, 1, 0)
+	BG.Size = UDim2.new(0, 300, 0, 350)
+	
+	Script.Name = "Script"
+	Script.Parent = BG
+	Script.AnchorPoint = Vector2.new(1, 0)
+	Script.BackgroundColor3 = Color3.new(1, 1, 1)
+	Script.Position = UDim2.new(1, -5, 0, 5)
+	Script.Size = UDim2.new(0.699999988, 0, 0.850000024, 0)
+	Script.Font = Enum.Font.SourceSans
+	Script.MultiLine = true
+	Script.TextColor3 = Color3.new(0, 0, 0)
+	Script.TextSize = 14
+	Script.TextWrapped = true
+	Script.TextXAlignment = Enum.TextXAlignment.Left
+	Script.TextYAlignment = Enum.TextYAlignment.Top
+	Script.Text = ""
+	
+	Frame.Parent = BG
+	Frame.BackgroundColor3 = Color3.new(1, 1, 1)
+	Frame.Position = UDim2.new(0, 5, 0, 5)
+	Frame.Size = UDim2.new(0.25, 0, 0.850000024, 0)
+	
+	UIListLayout.Parent = Frame
+	
+	Exec.Name = "Exec"
+	Exec.Parent = BG
+	Exec.AnchorPoint = Vector2.new(0, 1)
+	Exec.BackgroundColor3 = Color3.new(1, 1, 1)
+	Exec.Position = UDim2.new(0, 5, 1, -5)
+	Exec.Size = UDim2.new(0.964999974, 0, 0.100000001, 0)
+	Exec.Font = Enum.Font.SourceSans
+	Exec.Text = "Execute"
+	Exec.TextColor3 = Color3.new(0, 0, 0)
+	Exec.TextSize = 14
+	
+	toggle.Name = "toggle"
+	toggle.Parent = Category
+	toggle.BackgroundColor3 = Color3.new(1, 0, 0)
+	toggle.BorderSizePixel = 0
+	toggle.Size = UDim2.new(0, 17, 0, 17)
+	toggle.Font = Enum.Font.SourceSans
+	toggle.Text = ">"
+	toggle.TextColor3 = Color3.new(0, 0, 0)
+	toggle.TextSize = 14
+	-- Scripts:
+	toggle.MouseButton1Click:Connect(function()
+		Category:Destroy()
+	end)
+
+	Exec.MouseButton1Click:Connect(function()
+		local b = Instance.new("TextButton")
+		--Properties:
+		b.Name = ":b:"
+		b.Text = ':b:'
+		b.Parent = Frame
+		b.BackgroundColor3 = Color3.new(1, 1, 1)
+		b.Size = UDim2.new(1, 0, 0, 25)
+		b.Font = Enum.Font.SourceSans
+		b.TextColor3 = Color3.new(0, 0, 0)
+		b.TextSize = 14
+		
+		b.MouseButton1Click:Connect(function()
+			toclipboard(Script.Text)
+			b:Destroy()
+		end)
+		spawn(function()
+			loadstring(Script.Text)()
+		end)
+	end)
+end
+
+-- RC7 Explorer
+
+explorer = {}
+
+TextProperties = {"ClassName", "Name", "Value", "Text", "Reflectance", "Transparency", "Heat", "TeamName", "WalkSpeed", "Health", "MaxHealth", "Size", "Position", "AccountAge", "RobloxLocked", "TeamColor", "userId", "Brightness", "Ambient", "TimeOfDay", "FieldOfView", "CameraType", "LinkedSource"}
+BoolProperties = {"Anchored", "CanCollide", "Disabled", "Jump", "Sit", "Visible", "Enabled", "Locked", "FilteringEnabled", "StreamingEnabled", "GlobalShadows"}
+BrickColorProperties = {"BrickColor", "Color", "TeamColor", "Texture", "Value"}
+s = Instance.new("ScreenGui", game.CoreGui)
+
+if game.CoreGui:findFirstChild("Explorer") then 
+    game.CoreGui:findFirstChild("Explorer"):Remove() 
+end
+
+explorer.Cloned = nil
+explorer.Deleted = nil
+explorer.DeleteParent = nil
+explorer.Player = nil
+explorer.Search = nil
+explorer.ScriptSearch = nil
+explorer.Gui = nil
+explorer.Cloned = nil
+explorer.Deleted = nil
+explorer.DeleteParent = nil
+explorer.Current = 0
+explorer.CurrentOption = 0
+
+function explorer.Clear()
+    if explorer.Gui then 
+        explorer.Gui:Remove() 
+    end
+    explorer.Current = 0
+    explorer.CurrentOption = 0
+end
+
+function explorer.AddButton(N, Function, Color, Copy)
+    if not N then 
+        error("RenderButton - No Name Specified")
+    end
+    if not Function then 
+        error("RenderButton - No Function Specified") 
+    end
+    if not Color then 
+        Color = Color3.new(1, 1, 1) 
+    end
+    if Copy == nil then 
+        Copy = true 
+    end
+    P = Instance.new("TextButton")
+    if Copy then
+        P.Size = UDim2.new(0, 110, 0, 20)
+    else
+        P.Size = UDim2.new(0, 130, 0, 20)
+    end
+    P.Text = N.Name
+    P.Name = N.Name
+    P.Parent = explorer.Gui
+    P.BackgroundColor3 = Color
+    P.TextColor3 = Color3.new(0, 0, 0)
+    P.BackgroundTransparency = 0.5
+    P.Position = UDim2.new(0, ((math.modf(explorer.Current/30))*150)+300, 0, 50+(20*((explorer.Current%30)-1)))
+    P.MouseButton1Click:connect(function() 
+        Function(P) 
+    end)
+    D = Instance.new("TextButton")
+    D.Size = UDim2.new(0, 20, 0, 20)
+    D.Text = "X"
+    D.Name = N.Name
+    D.Parent = explorer.Gui
+    D.BackgroundColor3 = Color3.new(1, 0, 0)
+    D.TextColor3 = Color3.new(0, 0, 0)
+    D.BackgroundTransparency = 0.5
+    D.Position = UDim2.new(0, ((math.modf(explorer.Current/30))*150)+300+130, 0, 50+(20*((explorer.Current%30)-1)))
+    D.MouseButton1Click:connect(function()
+        explorer.Deleted = N
+        explorer.DeleteParent = N.Parent
+        N.Parent = nil
+        explorer.Clear()
+        explorer.Search(explorer.DeleteParent)
+    end)
+    if Copy then
+        C = Instance.new("TextButton")
+        C.Size = UDim2.new(0, 20, 0, 20)
+        C.Text = "C"
+        C.Name = N.Name
+        C.Parent = explorer.Gui
+        C.BackgroundColor3 = Color3.new(0, 1, 0.5)
+        C.TextColor3 = Color3.new(0, 0, 0)
+        C.BackgroundTransparency = 0.5
+        C.Position = UDim2.new(0, ((math.modf(explorer.Current/30))*150)+300+110, 0, 50+(20*((explorer.Current%30)-1)))
+        C.MouseButton1Click:connect(function()
+            explorer.Cloned = N
+            explorer.Clear()
+            explorer.Search(N.Parent)
+        end)
+    end
+    explorer.Current = explorer.Current + 1
+    return P
+end
+    
+function explorer.AddOption(N, Function, Color, Text)
+    if not N then 
+        error("RenderButton - No Name Specified") 
+    end
+    if not Color then 
+        Color = Color3.new(1, 1, 1) 
+    end
+    if Text == nil then 
+        Text = false 
+    end
+    if Text then
+        P = Instance.new("TextBox")
+    else
+        P = Instance.new("TextButton")
+    end
+    P.Text = N
+    P.Name = N
+    P.Parent = explorer.Gui
+    P.BackgroundColor3 = Color
+    P.TextColor3 = Color3.new(0, 0, 0)
+    P.BackgroundTransparency = 0.5
+    P.Size = UDim2.new(0, 150, 0, 20)
+    P.Position = UDim2.new(0, ((math.modf(explorer.CurrentOption/30))*150)+150, 0, 50+(20*((explorer.CurrentOption%30)-1)))
+    if not Text and Function then
+        P.MouseButton1Click:connect(function() Function(P) end)
+    end
+    explorer.CurrentOption = explorer.CurrentOption + 1
+    return P
+end
+
+function explorer.AddTextOption(Obj, Prop)
+    local Ob = Obj
+    local Pro = Prop
+    if type(Ob[Pro]) == "number" or type(Ob[Pro]) == "string" then
+        explorer.CurrentOption = explorer.CurrentOption + 1
+        local T = explorer.AddOption(Ob[Pro], nil, Color3.new(0.1, 0.4, 0.1), true)
+        explorer.CurrentOption = explorer.CurrentOption - 2
+        local O = explorer.AddOption("Change "..Pro..":", function() Ob[Pro] = T.Text end, Color3.new(0.1, 0.8, 0.1), false)
+        explorer.CurrentOption = explorer.CurrentOption + 1
+    end
+end
+
+function explorer.AddBrickColorOption(Obj, Prop)
+    local Ob = Obj
+    local Pro = Prop
+    if BrickColor.new(tostring(Ob[Pro])) == Ob[Pro] then
+        explorer.CurrentOption = explorer.CurrentOption + 1
+        local T = explorer.AddOption(tostring(Ob[Pro]), nil, Color3.new(0.1, 0.4, 0.1), true)
+        explorer.CurrentOption = explorer.CurrentOption - 2
+        local O = explorer.AddOption("Change "..Pro..":", function() Ob[Pro] = BrickColor.new(T.Text) end, Color3.new(0.1, 0.8, 0.1), false)
+        explorer.CurrentOption = explorer.CurrentOption + 1
+    end
+end
+
+function explorer.AddBoolOption(Obj, Prop)
+    local Ob = Obj
+    local Pro = Prop
+    if type(Ob[Pro]) == "boolean" then
+        local O = explorer.AddOption(Pro..": "..tostring(Ob[Pro]), nil, Color3.new(0.1, 0.8, 0.1), false)
+        O.MouseButton1Click:connect(function()
+            if Ob[Pro] then
+                Ob[Pro] = false
+                O.Text = Pro..": false"
+            else
+                Ob[Pro] = true
+                O.Text = Pro..": true"
+            end
+        end)
+    end
+end
+
+function explorer.TestProperty(Obj, Property)
+    Success = pcall(function() 
+        if Obj[Property] then 
+            return 
+        end 
+    end)
+    return Success
+end
+
+function explorer.LoadOptions(Object)
+    for Num, Prop in pairs(TextProperties) do
+        if explorer.TestProperty(Object, Prop) then
+            explorer.AddTextOption(Object, Prop)
+        end
+    end
+    for Num, Prop in pairs(BoolProperties) do
+        if explorer.TestProperty(Object, Prop) then
+            explorer.AddBoolOption(Object, Prop)
+        end
+    end
+    for Num, Prop in pairs(BrickColorProperties) do
+        if explorer.TestProperty(Object, Prop) then
+            explorer.AddBrickColorOption(Object, Prop)
+        end
+    end
+end
+
+function explorer.Search(Object)
+    explorer.Gui = Instance.new("ScreenGui")
+    explorer.Gui.Parent = game.CoreGui
+    explorer.Gui.Name = "Explorer"
+    if Object ~= game then
+        explorer.AddOption("Back", function() 
+            explorer.Clear(); 
+            explorer.Search(Object.Parent) 
+        end, Color3.new(0.5, 1, 1), false)
+    end
+    explorer.AddOption("Reload", function() explorer.Clear(); explorer.Search(Object); end, Color3.new(0.2, 1, 0.2), false)
+    if explorer.Cloned then
+        explorer.AddOption("Paste", function() explorer.Cloned:Clone().Parent = Object; explorer.Clear(); explorer.Search(Object); end, Color3.new(0.5, 1, 1), false)
+    end
+    if explorer.Deleted then
+        explorer.AddOption("Undo", function() explorer.Deleted.Parent = explorer.DeleteParent; explorer.Deleted = nil; DeletedParent = nil; explorer.Clear(); explorer.Search(Object); end, Color3.new(1, 0.6, 0.1), false)
+    end
+    if Object:IsA("Player") then
+        explorer.AddOption("Goto Character", function() explorer.Clear(); if Object.Character then explorer.Search(Object.Character); end end, Color3.new(1, 1, 1), false)
+    end
+    if Object:IsA("LocalScript") then
+        explorer.AddOption("EditScript", function() explorer.Clear(); explorer.ScriptSearch(Object); end, Color3.new(1, 1, 1), false)
+    end
+    if Object:IsA("Terrain") then
+        explorer.AddOption("Clear", function() Object:Clear(); end, Color3.new(1, 1, 1), false)
+    end
+    explorer.LoadOptions(Object)
+    explorer.AddOption("Close", explorer.Clear, Color3.new(1, 0.2, 0), false)
+    if not Object:IsA("Workspace") or not Object:IsA("Player") then
+        for Num, Obj in pairs(Object:GetChildren()) do
+            --if not Obj:IsA("BasePart") or not Object.Parent == game.Workspace then
+            if true then
+                if Obj:IsA("LocalScript") then
+                    explorer.AddButton(Obj, function() explorer.Clear(); explorer.Search(Obj); end, Color3.new(1, 0, 0), true)
+                elseif Obj:IsA("Script") or Obj:IsA("StarterScript") or Obj:IsA("CoreScript") then
+                    explorer.AddButton(Obj, function() explorer.Clear(); explorer.Search(Obj); end, Color3.new(0.5, 0.5, 0.8), true)
+                elseif Obj.Parent == game then
+                    explorer.AddButton(Obj, function() explorer.Clear(); explorer.Search(Obj); end, Color3.new(1, 1, 1), false)
+                else
+                    explorer.AddButton(Obj, function() explorer.Clear(); explorer.Search(Obj); end, Color3.new(1, 1, 1), true)
+                end
+            end
+        end
+    end
+    function explorer.MoveUp(Place, Amount)
+        for i,v in pairs(Place:GetChildren()) do
+            if v:IsA("TextLabel") or v:IsA("TextBox") then
+                v.Position = v.Position + UDim2.new(0,0,0,-Amount)
+            end
+        end
+    end
+    function explorer.MoveDown(Place, Amount)
+        for i,v in pairs(Place:GetChildren()) do
+            if v:IsA("TextLabel") or v:IsA("TextBox") then
+                v.Position = v.Position + UDim2.new(0,0,0,Amount)
+            end
+        end
+    end
+    i=0
+    function explorer.ScriptSearch(S)
+        Script2 = S
+        Script = Script2.Source
+        Table = {}
+        Enabled = true
+        explorer.Gui = Instance.new("ScreenGui")
+        explorer.Gui.Parent = game.CoreGui
+        explorer.Gui.Name = "Explorer"
+        while Enabled do
+            Start, End = string.find(Script, '\n')
+            print(Start, End)
+            if Start and End then
+                table.insert(Table, string.sub(Script, 1, End))
+                New = string.sub(Script, End+1, string.len(Script))
+                Script = New
+            else
+                Enabled = false
+                table.insert(Table, string.sub(Script, 1, End))
+                print("Finished")
+            end
+        end
+        P = Instance.new("TextLabel")
+        P.Size = UDim2.new(0, 500, 0, 20)
+        P.Text = Script2.Name
+        P.Name = "Script Line"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 1, 1)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -250, 0, 150+(20*(i-1)))
+        P.TextXAlignment = "Left"
+        i=i+1
+        New = {}
+        for I,Val in pairs(Table) do
+            print(Val)
+            P = Instance.new("TextBox")
+            P.ClearTextOnFocus = false
+            P.Size = UDim2.new(0, 500, 0, 20)
+            P.Text = Val
+            P.Name = "Script Line"
+            P.Parent = explorer.Gui
+            P.BackgroundColor3 = Color3.new(1, 1, 1)
+            P.TextColor3 = Color3.new(0, 0, 0)
+            P.BackgroundTransparency = 0.5
+            P.Position = UDim2.new(0.5, -250, 0, 150+(20*(i-1)))
+            P.TextXAlignment = "Left"
+            table.insert(New, P)
+            i=i+1
+        end
+        i=1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "^"
+        P.Name = "Scroll"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 1, 1)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function() 
+            explorer.MoveUp(explorer.Gui, -20) 
+        end)
+        i=i+1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "v"
+        P.Name = "Scroll"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 1, 1)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function() 
+            explorer.MoveDown(explorer.Gui, -20) 
+        end)
+        i=i+1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "^^"
+        P.Name = "Scroll"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 1, 1)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function() 
+            explorer.MoveUp(explorer.Gui, -200) 
+        end)
+        i=i+1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "vv"
+        P.Name = "Scroll"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 1, 1)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function() 
+            explorer.MoveDown(explorer.Gui, -200) 
+        end)
+        i=i+1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "S"
+        P.Name = "Save"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(0, 1, 0)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function()
+            StringS = ""
+            for Num, Obj in pairs(New) do
+                StringS = StringS..Obj.Text..'\n'
+            end
+            S.Source = StringS
+            S.Disabled = true
+            S.Disabled = false
+        end)
+        i=i+1
+        P = Instance.new("TextButton")
+        P.Size = UDim2.new(0, 20, 0, 20)
+        P.Text = "x"
+        P.Name = "Back"
+        P.Parent = explorer.Gui
+        P.BackgroundColor3 = Color3.new(1, 0.2, 0)
+        P.TextColor3 = Color3.new(0, 0, 0)
+        P.BackgroundTransparency = 0.5
+        P.Position = UDim2.new(0.5, -270, 0, 150+(20*(i-1)))
+        P.MouseButton1Click:connect(function()
+            explorer.Clear()
+            i=0
+            explorer.Search(S)
+        end)
+        i=i+1
+    end
+end
+
+-- VSim
+
+function vehicsimTpToCar(player)
+    plr.Character:SetPrimaryPartCFrame(vehicsimFindCar(player).PrimaryPart.CFrame)
+end
+
+function vehicsimTpCar(car, player)
+	same = player.Character.PrimaryPart.CFrame
+	vehicsimTpToCar(car)
+	wait(1)
+	vehicsimFindCar(car):SetPrimaryPartCFrame(same)
+end
+
+function vehicsimTpPlayer(player)
+	cframe = vehicsimFindCar(plr).PrimaryPart.CFrame
+	vehicsimFindCar(plr):SetPrimaryPartCFrame(player.Character.PrimaryPart.CFrame)
+	wait(1)
+	vehicsimFindCar(plr):SetPrimaryPartCFrame(cframe)
+end
+
+function vehicsimFindCar(player)
+    local vehicle = workspace.Vehicles:getChildren()
+    for i         = 1,#vehicle do
+        if vehicle[i]:findFirstChild("owner") then
+            if vehicle[i].owner.Value == player.Name then
+               return vehicle[i]
+            end
+        end
+    end
+end
+
+-- Big bro shit
+
+slap = false
+Golden = nil
+ctrldest = false
+ctrlbgon = false
+shiftkill = false
+
+function GoldenTouch(hit)
+    if slap == true then
+        if not hit:IsDescendantOf(plr.Character) then
+            if hit.Parent:IsA("Model") then
+                local fhum = firstHum(hit.Parent)
+                if fhum then
+                    game.ReplicatedStorage.RemoteEvents.Kill:FireServer(fhum)
+                end
+            end
+        end
+    end
+end
+
+plr:GetMouse().Button1Down:Connect(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightControl) then
+        if not ctrlbgon then return end
+        if slap == false then
+            if not anim then
+                anim             = Instance.new("Animation", plr)
+                anim.AnimationId = "http://www.roblox.com/Asset?ID=128853357"
+            end
+            if sound2 then
+                sound2:Destroy()
+                sound2 = Instance.new("Sound",la)
+                sound2.SoundId = "rbxassetid://949916584"
+                sound2.Volume = 5
+            else
+                sound2 = Instance.new("Sound",la)
+                sound2.SoundId = "rbxassetid://949916584"
+                sound2.Volume = 5
+            end
+            slap = true
+            spawn(function()
+                sound2:Play()
+                wait(.1)
+                game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(":B:gone,", "All")
+                wait(.5)
+                game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Thxot!", "All")
+            end)
+            wait(.2)
+            plr.Character.Humanoid:LoadAnimation(anim):Play()
+            wait(.8)
+            slap = false
+        end
+    elseif game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then
+        if not ctrldest then return end
+        if not plr:GetMouse().Target then return end
+        plr:GetMouse().Target:Destroy()
+    elseif game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightShift) then
+        if not shiftkill then return end
+        if not plr:GetMouse().Target then return end
+        local targ = firstHum(plr:GetMouse().Target.Parent)
+        if targ then
+            game.ReplicatedStorage.RemoteEvents.Kill:FireServer(targ)
+        end
+    end
+end)
+
+-- Redwood Prison (mostly skidded from the actual game xd)
+-- If you do use it, please credit me
+-- https://ixss.keybase.pub/redwoodlibrary.txt https://ixss.keybase.pub/redwoodclientscript.txt https://ixss.keybase.pub/redwoodserverscript.txt here have fun making your own shit ;)
+
+rw = {} -- Redwood lib
+if workspace:FindFirstChild("resources") then 
+    rw.revent = workspace.resources:FindFirstChild("RemoteEvent") 
+end 
+
+if workspace:FindFirstChild("resources") then 
+    rw.rfunc = workspace.resources:FindFirstChild("RemoteFunction") 
+end 
+
+
+rw.ease = {
+    outSine = function(t, b, e, d)
+        local c = e - b
+        return c * math.sin(t/d * (math.pi/2)) + b
+    end,
+}
+
+_G.movableId = _G.movableId or 0
+if not _G.movables then
+    _G.movables = {}
+end
+rw.movables = _G.movables
+
+rw.Movable = {}
+function rw.Movable:new(callingPlayer, clientId, type, customProps)
+    local o = {["originalClient"] = callingPlayer, ["clientId"] = clientId, ["type"] = type, ["birth"] = tick(),}
+    
+    for n,v in pairs(customProps) do
+        o[n] = v
+    end
+    
+    local checkModel = false
+    if type == "Laser" then
+        o.speed = 100--studs per second
+        o.range = 500--studs
+        o.destroy = true--gets rid of object when finished
+    end
+    if checkModel then
+        for n,v in pairs(rw.movables) do
+            if v.type == type and v.model == o.model then
+                v.finished = true
+            end
+        end
+    end
+    setmetatable(o, self)
+    self.__index = self
+    table.insert(rw.movables, o)
+    return o
+end
+function rw.Movable:Update(step, curTick)
+    if self.finished then
+        --//no need to do shit, must have finished up somewhere else
+        return true
+    end
+    
+    local type = self.type
+    
+    if type == "Laser" then
+        local laser = self.model
+        
+        if self.cleanUp then
+            local cleanUpTime = .25
+            local per = (curTick - self.cleanUp)/cleanUpTime
+            if per > 1 then
+                per = 1
+                self.finished = true
+            else
+                per = rw.ease.outSine(per, 0, 1, 1)
+            end
+            
+            --laser.Size = Vector3.new(0.2 + per*0.5, 0.2 + per*0.5, laser.Size.Z)
+            laser.Transparency = per
+        elseif curTick - self.birth >= 0 then
+            self.cleanUp = curTick
+        end
+    end
+    
+    return self.finished
+end
+function rw:newMovable(type, customProps)
+    _G.movableId = _G.movableId + 1
+    local mov = rw.Movable:new(plr, _G.movableId, type, customProps)
+    --table.insert(rw.movables, mov)--this was adding rw.movables to the list twice, which should not have happened
+end
+
+function rw:drawLaser(origin, target, customProps)
+    local p = Instance.new("Part", nil)
+    p.TopSurface = "Smooth"
+    p.BottomSurface = "Smooth"
+    p.Material = "SmoothPlastic"
+    p.Anchored = true
+    p.CanCollide = true
+    local laserTemp = p
+    laserTemp.Parent = nil
+    laserTemp.Material = Enum.Material.SmoothPlastic
+    laserTemp.BrickColor = BrickColor.new("Mid gray")
+    laserTemp.Anchored = true
+    laserTemp.CanCollide = false
+
+    local dist = (origin-target).magnitude
+    local laser = laserTemp:Clone()
+    laser.Parent = workspace:FindFirstChild('ignore') or nil
+    laser.Size = Vector3.new(0.2,0.2,dist)
+    laser.CFrame = CFrame.new(origin, target) * CFrame.new(0, 0, -dist/2) * CFrame.Angles(0, 0, 2*math.pi*math.random())
+    if customProps then
+        for n,v in pairs(customProps) do
+            laser[n] = v
+        end
+    end
+
+    
+    local mov = rw:newMovable("Laser", {
+        ["model"] = laser,
+    })
+    
+    return laser
+end
+
+function rw:drawLaserAll(origin, target, customProps)
+    rw:drawLaser(origin, target, customProps)
+    if not rw.revent then return end
+    rw.revent:FireServer("FireOtherClients", "drawLaser", origin, target, customProps, true)
+end
+
+function rw:drawLaserOthers(origin, target, customProps)
+    if not rw.revent then return end
+    rw.revent:FireServer("FireOtherClients", "drawLaser", origin, target, customProps, true)
+end
+
+function rw:drawLaserLaggier(origin, target, customProps)
+    if not rw.revent then return end
+    rw.revent:FireServer("FireAllClients", "drawLaser", origin, target, customProps, true)
+end
+
+function rw:showNotice(title, msg)
+    rw.revent:FireServer("FireAllClients", "showNotice", title, msg)
+end
+
+function rw:smallNotice(msg)
+    rw.revent:FireServer("FireAllClients", "smallNotice", msg, true)
+end
+
+function rw:smallNoticeOthers(msg)
+    rw.revent:FireServer("FireOtherClients", "smallNotice", msg, true)
+end
+
+function rw:setValue(b, c)
+    rw.rfunc:InvokeServer("setDataValue", b, c)
+end
+
+function rw:door(a)
+    rw.revent:FireServer("updateDoorSystem", a)
+end
+
+function rw:motd(a)
+    rw.rfunc:InvokeServer("attemptChangeMOTD")
+    wait(.1)
+    rw.revent:FireServer("updateMOTD", a)
+end
+
+function rw:setValue(dataType, value)
+    rw.rfunc:InvokeServer("setDataValue", dataType, value)
+end
+
+function rw:toggleSolid(part) --"toggleShield"
+    rw.revent:FireServer("toggleShield", part)
+end
+
+function rw:ChangeSpeed(a)
+    rw.revent:FireServer("changyChange", n)
+end
+
+function rw:PseudoBanOthers(a)
+    rw.revent:FireServer("FireOtherClients", "showBanScreen", a)
+end
+
+function rw:PseudoBanAll(a)
+    rw.revent:FireServer("FireAllClients", "showBanScreen", a)
+end
+
+function rw:TaseOthers()
+    rw.revent:FireServer("FireOtherClients", "taseMe")
+end
+
+function rw:BecomeFugi()
+    plr.Character.HumanoidRootPart.CFrame = CFrame.new(-601.35, -24.3, -333.33)
+end
+
+rs:UnbindFromRenderStep("Fixed lasers")
+wait()
+rs:BindToRenderStep("Fixed lasers", 1, function(step)
+	local curTick = tick()
+	
+	for n = #rw.movables,1,-1 do
+		local mover = rw.movables[n]
+		local finished = mover:Update(step, curTick)
+		
+		if finished then
+			if mover.destroy and mover.model then
+				mover.model:Destroy()
+			end
+			
+			table.remove(rw.movables, n)
+		end
+	end
+end)
+
+--[[
+    for i,k in pairs(workspace:GetChildren()) do
+        rw:toggleSolid(k)
+        for i,y in pairs(k:GetChildren()) do
+            rw:toggleSolid(y)
+            for i,s in pairs(y:GetChildren()) do
+                rw:toggleSolid(s)
+            end
+        end
+    end  
+]]
+
+rw.propfly = false
+rw.lag = false
+rw.speed = false
+rw.Neutral = false
+rw.OldPos = plr.Character.HumanoidRootPart.CFrame
+
+-- fortnite
+
+DiedEvent = function()
+    rw.OldPos = plr.Character.HumanoidRootPart.CFrame
+end
+
+char.Humanoid.Died:Connect(DiedEvent)
+
+plr.CharacterAdded:Connect(function(character)
+    char = character
+    if ctrlbgon then
+        la = nil
+        la = character:WaitForChild("Left Arm", 2)
+        if la == nil then return end
+        if Golden == nil then return end
+        sound2 = Instance.new("Sound",la)
+        sound2.SoundId = "rbxassetid://949916584"
+        sound2.Volume = 5
+        Golden:Disconnect()
+        Golden = la.Touched:Connect(function(hit) GoldenTouch(hit) end)
+    elseif Golden then Golden:Disconnect() 
+    elseif rw.Neutral then
+        if plr.TeamColor ~= BrickColor.new'White' then
+            rw.revent:FireServer("choiceResult", "returnToMenu", true)
+            rw.revent:FireServer('reloadMe')
+        else
+            wait(6)
+            character:WaitForChild("HumanoidRootPart", 2).CFrame = rw.OldPos
+            workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+            plr.PlayerGui:WaitForChild("GUI").roleChoose:Destroy()
+        end
+    end
+    character:WaitForChild("Humanoid").Died:Connect(DiedEvent)
+end)
+
+-- Main
+
+mainGui(Color3.new(0, 1, 0))
+addButton("Script Executor", "Main", function() scriptexe() end)
+
+-- Vehicle Sim
+addCategory("Vehicle Simulator", Color3.new(1, 0, 0), "Main")
+addButton("Speed - Perfect car", "Vehicle Simulator", function()
+	myCar = vehicsimFindCar(plr)
+	myCar.Handling.MaxSpeed.Value                  = 5000
+	myCar.Handling.Torque.Value                    = 10000
+	myCar.Handling.SteeringRadiusConstant.Value    = 999999
+	myCar.Handling.FrictionRoad.Value              = 9999999
+	myCar.Handling.FrictionOffRoad.Value           = 9999999
+	myCar.Handling.Nitro.NitroSpeed.Value          = 999999999
+    myCar.Handling.Nitro.NitroForce.Value          = 99999
+	myCar.Handling.TurboJump.TurboJumpHeight.Value = 70
+	myCar.Handling.Suspension.FrontHeight.Value    = 5
+	myCar.Handling.Suspension.RearHeight.Value     = 0
+	myCar.Handling.Gears.Value 		       = 7
+	myCar.Handling.FrontWheelDrive.Value           = true
+	myCar.Handling.RearWheelDrive.Value             = true
+	myCar.Handling.AirRotation.Value    	       = true
+	myCar.Handling.AirRotation.Power.Value         = 400
+end)
+addButton("Explore car - Skidded as fuck", "Vehicle Simulator", function()
+	explorer.Clear()
+	myCar = vehicsimFindCar(plr)
+	explorer.Search(myCar)
+end)
+
+addPopup("Teleportation - Car related", Color3.fromRGB(143,243,28), "Vehicle Simulator")
+addValues("1Players", "Player 1", "Player 2", "Teleportation - Car related")
+wait(.01)
+addButton("Teleport to car - Player 1", "Teleportation - Car related", function()
+	a = guis["Teleportation - Car related"].gui["1Players"]["1"]
+	vehicsimTpToCar(findPlayer(a.Text))
+end)
+addButton("Teleport car - Car: 1  Player: 2", "Teleportation - Car related", function()
+	a = guis["Teleportation - Car related"].gui["1Players"]["1"]
+	b = guis["Teleportation - Car related"].gui["1Players"]["2"]
+	vehicsimTpCar(findPlayer(a.Text), findPlayer(b.Text))
+end)
+addButton("TP player - TPs Player 1 using car", "Teleportation - Car related", function()
+	a = guis["Teleportation - Car related"].gui["1Players"]["1"]
+	vehicsimTpPlayer(findPlayer(a.Text))
+end)
+addButton("Kill player - Plr1, Press X", "Teleportation - Car related", function()
+    a = guis["Teleportation - Car related"].gui["1Players"]["1"]
+    vehicsimTpPlayer(findPlayer(a.Text))
+    vehicsimFindCar(plr).Handling.TurboJump.TurboJumpHeight.Value = 99999999
+end)
+
+addButton("Goto game", "Vehicle Simulator", function()
+    game:GetService'TeleportService':Teleport(171391948,nil,nil,ScreenGui)
+end)
+
+-- Big Brother
+addCategory("Big Brother", Color3.fromRGB(190, 209, 216), "Main")
+addButton("Toggle Destroy LCTRL Click [off]", "Big Brother", function()
+    ctrldestbut = guis["Big Brother"].gui["1"]
+    ctrldest = not ctrldest 
+    if not ctrldest then 
+		ctrldestbut.Text = "Toggle Destroy LCTRL Click [off]"
+	else 
+		ctrldestbut.Text = "Toggle Destroy LCTRL Click [on]"
+	end
+end)
+addButton("Toggle BGone RCTRL Click [off]", "Big Brother", function()
+    ctrlbgonbut = guis["Big Brother"].gui["2"]
+    ctrlbgon = not ctrlbgon 
+	if not ctrlbgon then 
+        ctrlbgonbut.Text = "Toggle BGone RCTRL Click [off]"
+        if Golden then Golden:Disconnect() end
+	else 
+        ctrlbgonbut.Text = "Toggle BGone RCTRL Click [on]"
+        la = plr.Character:WaitForChild("Left Arm", 1)
+        if la == nil then ctrlbgonbut.Text = "Toggle BGone RCTRL Click [off]"; return end
+        Golden = la.Touched:Connect(function(hit) GoldenTouch(hit) end)
+	end
+end)
+addButton("Toggle Kill RShift Click [off]", "Big Brother", function()
+    shiftkillbut = guis["Big Brother"].gui["3"]
+    shiftkill = not shiftkill
+	if not shiftkill then 
+		shiftkillbut.Text = "Toggle Kill RShift Click [off]"
+	else 
+		shiftkillbut.Text = "Toggle Kill RShift Click [on]"
+	end
+end)
+
+addPopup("Kill, Walkspeed, JumpPower", Color3.fromRGB(95, 242, 108), "Big Brother")
+addValues("1Vals", "Player", "Value", "Kill, Walkspeed, JumpPower")
+addButton("Kill - Player", "Kill, Walkspeed, JumpPower", function()
+    a = guis["Kill, Walkspeed, JumpPower"].gui["1Vals"]["1"]
+    game.ReplicatedStorage.RemoteEvents.Kill:FireServer(findPlayer(a.Text).Character.Humanoid)
+end)
+addButton("Walkspeed - Value", "Kill, Walkspeed, JumpPower", function()
+    a = guis["Kill, Walkspeed, JumpPower"].gui["1Vals"]["2"]
+    plr.Character.Humanoid.WalkSpeed = tonumber(a.Text)
+end)
+addButton("JumpPower - Value", "Kill, Walkspeed, JumpPower", function()
+    a = guis["Kill, Walkspeed, JumpPower"].gui["1Vals"]["2"]
+    plr.Character.Humanoid.JumpPower = tonumber(a.Text)
+end)
+
+addButton("Goto game", "Big Brother", function()
+    game:GetService'TeleportService':Teleport(437874827,nil,nil,ScreenGui)
+end)
+
+-- Redwood Prison
+
+addCategory("Redwood prison", rgb(204, 0, 0), "Main")
+addButton("Give all weapons", "Redwood prison", function()
+    weps = {'M1014','SPAS-12','Makarov','Dragunov','Taser','Ham Sandwich','Pancakes','Steak','Punch','Handcuffs','Shank','Hammer','Guitar','Fake ID Card','ACR','L86A2','M60','Beretta M9','UMP-45','AK47-U','Revolver','Minigun','M16','S&W 638','M14','AK47','M98B','Parachute'}
+    rw.rfunc:InvokeServer("giveRiotShield",Workspace.RiotShield)
+    for i=1, #weps, 1 do 
+        spawn(function()
+            rw.rfunc:InvokeServer("giveItem", weps[i])
+        end)
+    end
+    spawn(function()
+        game.Players.LocalPlayer.Backpack:WaitForChild("Minigun")
+        for i, v in pairs(game.Players.LocalPlayer.Backpack.Minigun:GetChildren()) do
+            v.Anchored = false
+        end
+    end)
+end)
+addButton("Propfly [Off]", "Redwood prison", function()
+    propflybut = guis["Redwood prison"].gui["2"]
+    rw.propfly = not rw.propfly
+    propflybut.Text = "Propfly [Off]"
+    if rw.propfly then
+        propflybut.Text = "Propfly [On]"
+        spawn(function()
+            i = 1
+            while rw.propfly == true do
+                wait()
+                i = i+0.01
+                if i >= 1 then i = 0 end
+                local customProps = {}
+                customProps.Color = Color3.fromHSV(i,1,1)
+                customProps.Reflectance = 0.5
+                customProps.Material = Enum.Material.Neon
+                customProps.Size = Vector3.new(10,1,10)
+                customProps.CanCollide = true
+                customProps.CFrame = CFrame.new(char.HumanoidRootPart.Position - Vector3.new(0,4,0))*CFrame.Angles(0, math.rad(i*90), 0)
+                rw:drawLaserAll(char.HumanoidRootPart.Position - Vector3.new(0,3,0), char.HumanoidRootPart.Position - Vector3.new(0,5,0), customProps)
+            end
+        end)
+    end
+end)
+
+addButton("Arrest all", "Redwood prison", function()
+    rw.revent:FireServer("choiceResult", "returnToMenu", true)
+    wait()
+    for i,v in pairs(plrs:GetChildren()) do
+        spawn(function()
+            if v.Name == "MR_Apiggie" or v.Name == "BaGuiStian" or v.Name == "snakeytie" or v.Name == "MRePotatoes" then
+                rw:smallNotice("lol")
+            else
+                rw.revent:FireServer("cuff",v)
+                rw:smallNotice("lol")
+            end
+        end)
+    end
+    wait(1)
+    -- rw:PseudoBanOthers("Oh no!!!!!!!")
+    spawn(function()
+        wait(0.5)
+        for _=1,50 do
+            wait()
+            rw:smallNotice(".")
+        end
+        rw:smallNotice("Say 'Hi' to your mom for me.")
+    end)
+    wait() 
+    rw.rfunc:InvokeServer("requestTeam", "police")
+    wait()
+    rw.revent:FireServer("reloadMe")
+    wait(1)
+    rw:BecomeFugi()
+    --[[ spawn(function()
+        wait(11)
+        for i,v in pairs(plrs:GetChildren()) do
+            rw.revent:FireServer("dealDamage", v.Character.Humanoid,100)
+        end
+    end)]]
+end)
+addButton("Kill all", "Redwood prison", function()
+    for i,v in pairs(plrs:GetChildren()) do
+        spawn(function()
+            rw.revent:FireServer("dealDamage", v.Character.Humanoid,100)
+        end)
+    end
+end)
+addButton("Open/Close all doors", "Redwood prison", function()
+    for i,v in pairs(workspace.AllDoors:GetChildren()) do
+        rw:door(v)
+    end
+end)
+addButton("Lag others [Off]", "Redwood prison", function()
+    lagbut = guis["Redwood prison"].gui["6"]
+    eeee = hugestring
+    rw.lag = not rw.lag 
+    lagbut.Text = "Lag others [Off]"
+    if rw.lag then lagbut.Text = "Lag others [On]" end
+    spawn(function()
+        while rw.lag == true do
+            for i = 1, 20 do
+                rw:smallNoticeOthers(eeee)
+            end
+            wait(9)
+        end
+    end)
+end)
+
+addButton("Speed [Off]", "Redwood prison", function()
+    speedbut = guis["Redwood prison"].gui["7"]
+    rw.speed = not rw.speed
+    speedbut.Text = "Speed [Off]"
+    if rw.speed then speedbut.Text = "Speed [On]" end
+    spawn(function()
+        while rw.speed == true do
+            char.Humanoid.WalkSpeed = 100
+            wait(0.1)
+        end
+    end)
+end)
+
+addButton("Make CoreGui dissapear [Off]", "Redwood prison", function()
+    cgdbut = guis["Redwood prison"].gui["8"]
+    rw.cgd = not rw.cgd
+    eeee = hugestring
+    cgdbut.Text = "Make CoreGui dissapear [Off]"
+    if rw.cgd then cgdbut.Text = "Make CoreGui dissapear [On]" end
+    spawn(function()
+        while rw.cgd == true do
+            for i = 1, 8 do
+                rw:smallNoticeOthers(eeee)
+            end
+            wait(9)
+        end
+    end)
+end)
+addButton("Toggle neutral", "Redwood prison", function()
+    rw.Neutral = not rw.Neutral
+    char.Head.Position = Vector3.new(0,0,0)
+end)
+addButton("Give all gamepasses", "Redwood prison", function()
+    rw:setValue("hasSwat", true)
+    rw:setValue("hasSpecOps", true)
+    rw:setValue("hasMerc", true)
+    rw:setValue("hasPilot", true)
+    rw:setValue("hasAtv", true)
+    local indicator = Instance.new("BoolValue", plr)
+    indicator.Name = "hasAtv"
+    local indicator = Instance.new("BoolValue", plr)
+    indicator.Name = "hasPilot"
+end)
+addButton("Toggle map collision", "Redwood prison", function()
+    for i,k in pairs(workspace:GetChildren()) do
+        rw:toggleSolid(k)
+        for i,y in pairs(k:GetChildren()) do
+            rw:toggleSolid(y)
+            for i,s in pairs(y:GetChildren()) do
+                rw:toggleSolid(s)
+            end
+        end
+    end  
+end)
+addButton("Tase others", "Redwood prison", function()
+    rw:TaseOthers()
+end)
+
+addPopup("Broadcast message", rgb(4, 255, 0), "Redwood prison")
+addValues("1Vals", "Title", "Text", "Broadcast message")
+addButton("Send notice - Title, Text", "Broadcast message", function()
+    a = guis["Broadcast message"].gui["1Vals"]["1"]
+    b = guis["Broadcast message"].gui["1Vals"]["2"]
+    rw:showNotice(a.Text, b.Text)
+end)
+addButton("Send small notice - Text", "Broadcast message", function()
+    b = guis["Broadcast message"].gui["1Vals"]["2"]
+    rw:smallNotice(b.Text)
+end)
+addButton("Change MOTD - Text", "Broadcast message", function()
+    b = guis["Broadcast message"].gui["1Vals"]["2"]
+    rw:motd(b.Text)
+end)
+addButton("Pseudo ban all - Text", "Broadcast message", function()
+    b = guis["Broadcast message"].gui["1Vals"]["2"]
+    rw:PseudoBanAll(b.Text)
+end)
+addButton("Pseudo ban Others - Text", "Broadcast message", function()
+    b = guis["Broadcast message"].gui["1Vals"]["2"]
+    rw:PseudoBanOthers(b.Text)
+end)
+
+addButton("Goto game", "Redwood prison", function()
+    game:GetService'TeleportService':Teleport(402122991,nil,nil,ScreenGui)
+end)
+
+-- One Piece Emerald
+
+addCategory("One Piece Emerald", rgb(191, 0, 0), "Main")
+
+addButton("Kick on jump all", "One Piece Emerald", function()
+	Events = game.ReplicatedStorage.Events or nil
+	Remote = Events:FindFirstChild'Tilt' or nil
+	if Remote == nil then return end
+	for _,v in pairs(game.Players:GetChildren()) do
+	    for _,c in pairs(v.Character:GetChildren()) do
+	        for _,b in pairs(c:GetChildren()) do
+	            if b:isA("Motor6D") then
+	                print'a'
+	                Remote:FireServer(b, CFrame.new(0,math.huge,0))
+	            end
+	        end
+	    end
+	end
+end)
+
+addButton("Make everyone weird", "One Piece Emerald", function()
+	Events = game.ReplicatedStorage.Events or nil
+	Remote = Events:FindFirstChild'Tilt' or nil
+	if Remote == nil then return end
+	for _,v in pairs(game.Players:GetChildren()) do
+	    for _,c in pairs(v.Character:GetChildren()) do
+	        for _,b in pairs(c:GetChildren()) do
+	            if b:isA("Motor6D") then
+	                print'a'
+	                Remote:FireServer(b, CFrame.new(0,0,0))
+	            end
+	        end
+	    end
+	end
+end)
+
+addButton("Make everyone upside down", "One Piece Emerald", function()
+    Events = game.ReplicatedStorage.Events or nil
+    Remote = Events:FindFirstChild'Tilt' or nil
+    if Remote == nil then return end
+    for _,v in pairs(game.Players:GetChildren()) do
+        Remote:FireServer(v.Character.LowerTorso.Root, CFrame.new(0,2,0) * CFrame.Angles(math.rad(180),math.rad(180),0))
+    end
+end)
+
+
+ScreenGui.Parent = game.CoreGui
+
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = game:HttpGet('https://ixss.keybase.pub/Watermark.txt', true);
+    Font = Enum.Font.Code;
+    Color = rgb(244, 0, 175);
+    FontSize = Enum.FontSize.Size96;   
+})
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = game:HttpGet('https://ixss.keybase.pub/MOTD.txt', true);
+    Font = Enum.Font.Code;
+    Color = rgb(65, 0, 186);
+    FontSize = Enum.FontSize.Size96;   
+})
+-- game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(game:HttpGet('https://ixss.keybase.pub/MOTD.txt', true), "All")
